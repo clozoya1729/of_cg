@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as p3
 from matplotlib.animation import FuncAnimation
 
-from geometry import CubeSat
+from cubesat import CubeSat
 from plotter import faces, thrusterPoints, avText, fps, fig, reset_thruster_img, fire_thruster_img, poly
 
 print(str(p3)[0:0])  # bug fix
