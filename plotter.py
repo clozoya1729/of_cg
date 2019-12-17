@@ -1,6 +1,7 @@
+import numpy as np
+from matplotlib import colors as mcolors
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from matplotlib import colors as mcolors
 
 fps = 60
 dimensions = (1, 1, 1)
@@ -8,7 +9,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ms = 10
 
-avText = ax.text(-1, -1, -1, "(0, 0, 0)")
+thrusterColor = 'black'
 reach = 1
 lims = (-reach, reach)
 uFace, = ax.plot([], [], [])
@@ -18,10 +19,10 @@ rFace, = ax.plot([], [], [])
 fFace, = ax.plot([], [], [])
 bFace, = ax.plot([], [], [])
 
-thrusterRF, = ax.plot([], [], [], 'b', marker='$rf$', markersize=ms)
-thrusterRB, = ax.plot([], [], [], 'b', marker='$rb$', markersize=ms)
-thrusterLF, = ax.plot([], [], [], 'b', marker='$lf$', markersize=ms)
-thrusterLB, = ax.plot([], [], [], 'b', marker='$lb$', markersize=ms)
+thrusterRF, = ax.plot([], [], [], thrusterColor, marker='$rf$', markersize=ms)
+thrusterRB, = ax.plot([], [], [], thrusterColor, marker='$rb$', markersize=ms)
+thrusterLF, = ax.plot([], [], [], thrusterColor, marker='$lf$', markersize=ms)
+thrusterLB, = ax.plot([], [], [], thrusterColor, marker='$lb$', markersize=ms)
 
 ax.set_xlim3d(lims)
 ax.set_xlabel('x')
@@ -31,6 +32,12 @@ ax.set_zlim3d(lims)
 ax.set_zlabel('z')
 ax.set_title('OF-CG Attitude Control')
 plt.locator_params(nbins=2)
+x, y, z = np.zeros((3, 3))
+u, v, w = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='blue')
+u, v, w = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, -1]])
+ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='red')
+
 
 faces = {
     'up': uFace,
@@ -46,13 +53,17 @@ thrusterPoints = {
     'lf': thrusterLF,
     'lb': thrusterLB,
 }
+
+
 def cc(arg):
     return mcolors.to_rgba(arg, alpha=0.25)
 
-facecolors=[cc('g'), cc('g'), cc('b'), cc('b'), cc('y'), cc('y')]
+
+facecolors = [cc('g'), cc('g'), cc('b'), cc('b'), cc('y'), cc('y')]
+
 
 def reset_thruster_img(thruster):
-    thrusterPoints[thruster].set_color('b')
+    thrusterPoints[thruster].set_color(thrusterColor)
     thrusterPoints[thruster].set_marker('${}$'.format(thruster))
     thrusterPoints[thruster].set_markersize(ms)
 
@@ -69,6 +80,3 @@ def fire_thruster_img(thruster, pos):
 
 poly = Poly3DCollection([], facecolors=facecolors)
 ax.add_collection3d(poly, zs=range(6))
-
-
-
