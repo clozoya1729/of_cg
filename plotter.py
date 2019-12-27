@@ -12,12 +12,12 @@ ms = 10
 thrusterColor = 'black'
 reach = 1
 lims = (-reach, reach)
-uFace, = ax.plot([], [], [])
-dFace, = ax.plot([], [], [])
-lFace, = ax.plot([], [], [])
-rFace, = ax.plot([], [], [])
-fFace, = ax.plot([], [], [])
-bFace, = ax.plot([], [], [])
+uFace, = ax.plot([], [], [], lw=0.25)
+dFace, = ax.plot([], [], [], lw=0.25)
+lFace, = ax.plot([], [], [], lw=0.25)
+rFace, = ax.plot([], [], [], lw=0.25)
+fFace, = ax.plot([], [], [], lw=0.25)
+bFace, = ax.plot([], [], [], lw=0.25)
 
 thrusterRF, = ax.plot([], [], [], thrusterColor, marker='$rf$', markersize=ms)
 thrusterRB, = ax.plot([], [], [], thrusterColor, marker='$rb$', markersize=ms)
@@ -34,10 +34,12 @@ ax.set_title('OF-CG Attitude Control')
 plt.locator_params(nbins=2)
 x, y, z = np.zeros((3, 3))
 u, v, w = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='blue')
+axesPositive = ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='green', lw=0.75, linestyle='--')
 u, v, w = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, -1]])
-ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='red')
+axesNegative = ax.quiver(x, y, z, u, v, w, arrow_length_ratio=0.1, color='orangered', lw=0.75, linestyle='--')
 
+bodyQuiverPositive = ax.quiver(x, y, z, x, y, z, arrow_length_ratio=0.15, color='blue', lw=0.5, zorder=100)
+bodyQuiverNegative = ax.quiver(x, y, z, x, y, z, arrow_length_ratio=0.15, color='red', lw=0.5, zorder=100)
 
 faces = {
     'up': uFace,
@@ -56,7 +58,7 @@ thrusterPoints = {
 
 
 def cc(arg):
-    return mcolors.to_rgba(arg, alpha=0.25)
+    return mcolors.to_rgba(arg, alpha=0.1)
 
 
 facecolors = [cc('g'), cc('g'), cc('b'), cc('b'), cc('y'), cc('y')]
