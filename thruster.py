@@ -1,9 +1,9 @@
-import numpy as np
-from scipy.spatial.transform import Rotation as R
+# from scipy.spatial.transform import Rotation as R
 
 from geometry import origin, Coordinate
 
-r = R.from_quat([0, 0, np.sin(np.pi / 4), np.cos(np.pi / 4)])
+
+#r = R.from_quat([0, 0, np.sin(np.pi / 4), np.cos(np.pi / 4)])
 
 
 class Thruster:
