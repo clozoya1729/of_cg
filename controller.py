@@ -5,6 +5,7 @@ import numpy as np
 class Controller:
     timer = 0
     timeout = 0
+    tagged = False
 
     def check_press(self, cube, graphics):
         if self.timeout == 0:
@@ -23,7 +24,17 @@ class Controller:
             if keyboard.is_pressed('i'):
                 self.timeout = 15
                 cube.decide()
-
+            if keyboard.is_pressed('['):
+                # TODO: r1 -> r2, r1=-r2, rf=0
+                self.tagged = True
+            if self.tagged:
+                if self.timer <= 3:
+                    cube.apply_thrust('lb')
+                else:
+                    cube.apply_thrust('rb')
+            if self.timer > 6:
+                self.tagged = False
+                self.timer = 0
             if keyboard.is_pressed('v'):
                 self.timeout = 15
                 if graphics['displayWireframe']:
@@ -86,7 +97,7 @@ class Controller:
                                                                      color='orangered', lw=0.75,
                                                                      linestyle='--')
         self.timer += 1
-        if self.timer > self.timeout:
+        if self.timer > self.timeout and self.tagged == False:
             self.timer = 0
             self.timeout = 0
 
